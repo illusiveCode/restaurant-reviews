@@ -1,12 +1,14 @@
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
+import Restaurant from "./pages/Restaurant";
 
 function App() {
   return (
     <Router>
       <Header />
-      <Route path="/" component={Home} />
+      <Route exact path="/" component={Home} />
+      <Route path="/:placeId" component={Restaurant} />
     </Router>
   );
 }
