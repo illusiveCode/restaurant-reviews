@@ -42,6 +42,7 @@ function Map() {
     }
   }, [window.google]);
 
+  //PLACING MARKERS ON ALL THE NEARBY RESTAURANTS
   const createMarkers = (places, map) => {
     places.map((p) => {
       const icon = {
@@ -52,6 +53,7 @@ function Map() {
         scaledSize: new window.google.maps.Size(25, 25),
       };
 
+      // CREATING MARKERS FOR RESTAURANT LOCATIONS
       const marker = new window.google.maps.Marker({
         position: {
           lat: p.geometry.location.lat(),
@@ -63,7 +65,6 @@ function Map() {
     });
   };
 
-  return <div ref={mapRef} style={{ height: "100vh" }} />;
+  return <div ref={mapRef} style={{ height: "calc(100vh - 56px)" }} />;
 }
-console.log("hello");
 export default Map;

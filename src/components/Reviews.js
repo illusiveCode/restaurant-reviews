@@ -10,11 +10,17 @@ function Reviews({ reviews, children }) {
 
       <div className="row">
         {reviews?.map((r) => (
-          <div className="col-md-3">
+          <div key={r.time} className="col-md-3">
             <div className="card">
               <div className="card-body">
                 <div className="text-center my-4">
-                  <img src={r.profile_photo_url} alt={r.author_name} />
+                  {r.profile_photo_url ? (
+                    <img src={r.profile_photo_url} alt={r.author_name} />
+                  ) : (
+                    <div className="placeholder-img">
+                      {r.author_name.substring(0, 1)}
+                    </div>
+                  )}
                 </div>
                 <h5 className="card-title text-center">{r.author_name}</h5>
                 <hr />

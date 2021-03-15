@@ -10,7 +10,9 @@ function Home() {
           <Map />
         </div>
         <div className="col-md-3">
-          <Places />
+          <div className="restaurants-list">
+            <Places />
+          </div>
         </div>
       </div>
     </div>
