@@ -6,6 +6,7 @@ function Map() {
   const mapRef = useRef();
   const [restaurant, setRestaurant] = useState({});
   const [mapElm, setMapElm] = useState(null);
+  const [markers, setMarkers] = useState([]);
 
   const { dispatch, state } = useContext(Context);
 
@@ -14,6 +15,10 @@ function Map() {
       const map = new window.google.maps.Map(mapRef.current, {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 15,
+      });
+
+      map.addListener("click", (e) => {
+        console.log({ e });
       });
 
       setMapElm(map);
@@ -58,11 +63,20 @@ function Map() {
   }, [window.google]);
 
   useEffect(() => {
-    createMarkers();
-  }, [state.restaurants]);
+    markers.map((marker) => {
+      marker.setMap(null);
+    });
+
+    if (state.filtered.length === 0 && state.filter > 0) {
+    } else {
+      createMarkers();
+    }
+  }, [state.restaurants, state.filtered]);
+  console.log({ markers, mapElm });
 
   const addRestaurant = (data) => {
     const newRestaurant = { ...restaurant, ...data };
+
     dispatch({
       action: "UPDATE_RESTAURANTS",
       payload: [newRestaurant, ...state.restaurants],
@@ -73,7 +87,11 @@ function Map() {
 
   //PLACING MARKERS ON ALL THE NEARBY RESTAURANTS
   const createMarkers = () => {
-    state.restaurants.map((p) => {
+    const restaurants =
+      state.filtered.length > 0 ? state.filtered : state.restaurants;
+
+    let markersArr = [];
+    restaurants.map((p) => {
       const icon = {
         url: p.icon,
         size: new window.google.maps.Size(70, 70),
@@ -91,7 +109,23 @@ function Map() {
         icon,
         map: mapElm,
       });
+
+      const infoWindow = new window.google.maps.InfoWindow({
+        content: `
+          <h3>${p.name}</h3>
+          <p>${p.vicinity}</p>
+        `,
+      });
+
+      marker.addListener("click", (e) => {
+        console.log({ e });
+        infoWindow.open(mapElm, marker);
+      });
+
+      markersArr = [marker, ...markersArr];
     });
+
+    setMarkers(markersArr);
   };
 
   return (

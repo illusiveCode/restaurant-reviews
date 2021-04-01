@@ -5,30 +5,42 @@ import { Link } from "react-router-dom";
 
 function Places() {
   const { state } = useContext(Context);
-  console.log({ state });
+
+  console.log(state);
+
+  const restaurants =
+    state.filtered.length > 0 ? state.filtered : state.restaurants;
+
+  // if (state.filtered.length === 0 && state.filter > 0) {
+  //   return "Nothing found";
+  // }
 
   return (
     <div>
-      <h2 className="nearby">Nearby Restaurants</h2>
-      <ul className="list-group">
-        {state.restaurants.map((r) => (
-          <li className="list-group-item">
-            <Link to={`/${r.place_id}`}>
-              <strong>{r.name}</strong>
-              <div>
-                <StarRatings
-                  rating={r.rating}
-                  starRatedColor="orange"
-                  numberOfStars={5}
-                  name="rating"
-                  starDimension="18px"
-                  starSpacing="3px"
-                />
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <h2 className="nearby m-3">Nearby Restaurants</h2>
+      {state.filtered.length === 0 && state.filter > 0 ? (
+        <div className="mx-3 alert alert-warning">Nothing found</div>
+      ) : (
+        <ul className="list-group">
+          {restaurants.map((r, key) => (
+            <li key={key} className="list-group-item">
+              <Link to={`/${r.place_id}`}>
+                <strong>{r.name}</strong>
+                <div>
+                  <StarRatings
+                    rating={r.rating}
+                    starRatedColor="orange"
+                    numberOfStars={5}
+                    name="rating"
+                    starDimension="18px"
+                    starSpacing="3px"
+                  />
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
