@@ -9,7 +9,7 @@ function Places() {
 
   return (
     <div>
-      <h2>Nearby Restaurants</h2>
+      <h2 className="nearby">Nearby Restaurants</h2>
       <ul className="list-group">
         {state.restaurants.map((r) => (
           <li className="list-group-item">

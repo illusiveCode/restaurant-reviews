@@ -52,13 +52,15 @@ function Restaurant(props) {
             <div>
               {restaurant.photos && (
                 <img
-                  src={restaurant.photos[2].getUrl()}
+                  className="hero-img"
+                  src={restaurant.photos[0].getUrl()}
                   alt={restaurant.name}
                 />
               )}
               <h1>{restaurant.name}</h1>
               <p>{restaurant.vicinity}</p>
-
+              <p>{restaurant.international_phone_number}</p>
+              <p>{}</p>
               <StarRatings
                 rating={restaurant.rating}
                 starRatedColor="orange"
@@ -67,6 +69,11 @@ function Restaurant(props) {
                 starDimension="18px"
                 starSpacing="3px"
               />
+              <div className="address">
+                {restaurant.address_components?.map((a) => (
+                  <p>{a.type}</p>
+                ))}
+              </div>
             </div>
           </header>
 
