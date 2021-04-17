@@ -4,6 +4,7 @@ import { useContext } from "react";
 import Context from "../context";
 
 function Header() {
+  // Update global state
   const { dispatch, state } = useContext(Context);
 
   const handleChange = (filter) => {
@@ -18,7 +19,7 @@ function Header() {
   };
 
   return (
-    <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-md navbar-dark bg-primary">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           Restaurant Reviews

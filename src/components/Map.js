@@ -10,6 +10,7 @@ function Map() {
 
   const { dispatch, state } = useContext(Context);
 
+  // Creating the map
   useEffect(() => {
     if (window.google) {
       const map = new window.google.maps.Map(mapRef.current, {
@@ -22,7 +23,7 @@ function Map() {
       });
 
       setMapElm(map);
-
+      //Add restaurant coords
       map.addListener("rightclick", (e) => {
         setRestaurant({
           geometry: {
@@ -33,18 +34,20 @@ function Map() {
           },
         });
       });
-
+      //users location using coords
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         const position = {
           lat: coords.latitude,
           lng: coords.longitude,
         };
+
+        //Recenter the map in current location
         map.setCenter(position);
         const marker = new window.google.maps.Marker({
           position,
           map,
         });
-
+        //showing restaurants nearby
         const service = new window.google.maps.places.PlacesService(map);
         service.nearbySearch(
           {
@@ -52,8 +55,10 @@ function Map() {
             radius: "5000",
             type: ["restaurant"],
           },
+          //If
           (results, status) => {
             if (status === "OK") {
+              //update global state via dispatch
               dispatch({ action: "UPDATE_RESTAURANTS", payload: results });
             }
           }
@@ -72,11 +77,11 @@ function Map() {
       createMarkers();
     }
   }, [state.restaurants, state.filtered]);
-  console.log({ markers, mapElm });
 
   const addRestaurant = (data) => {
     const newRestaurant = { ...restaurant, ...data };
 
+    //Using dispatch to update global state of restaurants without replacing previous restaurants
     dispatch({
       action: "UPDATE_RESTAURANTS",
       payload: [newRestaurant, ...state.restaurants],
@@ -85,11 +90,12 @@ function Map() {
     setRestaurant({});
   };
 
-  //PLACING MARKERS ON ALL THE NEARBY RESTAURANTS
+  //GENERATING MARKERS ON ALL THE NEARBY RESTAURANTS WITH FILTER
   const createMarkers = () => {
     const restaurants =
       state.filtered.length > 0 ? state.filtered : state.restaurants;
 
+    // Looping through all the restaurants
     let markersArr = [];
     restaurants.map((p) => {
       const icon = {
@@ -99,8 +105,7 @@ function Map() {
         anchor: new window.google.maps.Point(17, 34),
         scaledSize: new window.google.maps.Size(25, 25),
       };
-
-      // CREATING MARKERS FOR RESTAURANT LOCATIONS
+      // PLACING MARKERS FOR RESTAURANT LOCATIONS
       const marker = new window.google.maps.Marker({
         position: {
           lat: p.geometry.location.lat(),
@@ -110,6 +115,7 @@ function Map() {
         map: mapElm,
       });
 
+      // WHEN MARKERS ARE CLICKED
       const infoWindow = new window.google.maps.InfoWindow({
         content: `
           <h3>${p.name}</h3>
@@ -130,6 +136,7 @@ function Map() {
 
   return (
     <>
+      {/*  When has geometry - will create the form  */}
       {restaurant.geometry && (
         <AddRestaurant submit={addRestaurant} close={setRestaurant} />
       )}

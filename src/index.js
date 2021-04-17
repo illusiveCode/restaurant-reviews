@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import Context from "./context";
 import reducer from "./reducer";
 
+//Using reducer to handle a switch for an action
 const Root = () => {
   const initialState = useContext(Context);
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -16,7 +17,7 @@ const Root = () => {
     </Context.Provider>
   );
 };
-
+//Adding Root component to render to the DOM
 ReactDOM.render(
   <React.StrictMode>
     <Root />

@@ -11,10 +11,6 @@ function Places() {
   const restaurants =
     state.filtered.length > 0 ? state.filtered : state.restaurants;
 
-  // if (state.filtered.length === 0 && state.filter > 0) {
-  //   return "Nothing found";
-  // }
-
   return (
     <div>
       <h2 className="nearby m-3">Nearby Restaurants</h2>
